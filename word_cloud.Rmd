@@ -1,10 +1,10 @@
 ---
-title: Nubes de palablas <span style="color:green"> Casen 2006-2020 </span>
+title: Minería de texto y fundamentos de nube de palabras en <span style="color:green"> R </span>
 author:
 - name: VE-CC-AJ
   affiliation: DataIntelligence
 subtitle: | 
-  Por comunas
+  Sobre Neruda
 header-includes:
    - \usepackage[]{babel}
 output:
@@ -76,48 +76,54 @@ library(reldist)
 library(DT)
 ```
 
+# Lo básico
 
-## Lectura de bases de datos Casen
+## Minería de texto
+
+Los métodos de minería de texto nos permiten resaltar las palabras clave más utilizadas en un párrafo de textos. Se puede crear una nube de palabras, también conocida como nube de texto o nube de etiquetas, que es una representación visual de datos de texto.
+
+El procedimiento de creación de nubes de palabras es muy sencillo en R si conoce los diferentes pasos a ejecutar. El paquete de minería de texto (tm) y el paquete generador de nube de palabras (wordcloud) están disponibles en R para ayudarnos a analizar textos y visualizar rápidamente las palabras clave como una nube de palabras.
+
+3 razones por las que debería usar nubes de palabras para presentar sus datos de texto
+
+    Las nubes de palabras añaden sencillez y claridad. Las palabras clave más utilizadas se destacan mejor en una nube de palabras
+    Las nubes de palabras son una potente herramienta de comunicación. Son fáciles de entender, para compartir y tienen un gran impacto.
+    Las nubes de palabras son visualmente atractivas que los datos de una tabla
+
+¿Quién usa nubes de palabras?
+
+    Investigadores: para informar datos cualitativos
+    Comercializadores: para resaltar las necesidades y los puntos débiles de los clientes.
+    Educadores: para apoyar temas esenciales
+    Políticos y periodistas
+    sitios de redes sociales: para recopilar, analizar y compartir los sentimientos de los usuarios
 
 
-```{r}
 
-# Load
+## Leemos y cargamos el texto
+
+```{r, warning=FALSE, include=FALSE}
+
 library("tm")
 library("SnowballC")
 library("wordcloud")
 library("RColorBrewer")
-```
 
+text <- read.delim2("buko.txt", encoding="UTF-8")
 
-```{r}
-filePath <- "http://www.sthda.com/sthda/RDoc/example-files/martin-luther-king-i-have-a-dream-speech.txt"
-text <- readLines(filePath)
-text
-```
-
-
-Load the data as a corpus
-
-```{r}
 # Load the data as a corpus
 docs <- Corpus(VectorSource(text))
-```
-
-Inspect the content of the document
-
-```{r}
 inspect(docs)
 ```
 
 
-Text transformation
+Transformamos el texto
 
 Transformation is performed using tm_map() function to replace, for example, special characters from the text.
 
 Replacing “/”, “@” and “|” with space:
 
-```{r}
+```{r, warning=FALSE}
 toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
 docs <- tm_map(docs, toSpace, "/")
 docs <- tm_map(docs, toSpace, "@")
@@ -125,10 +131,10 @@ docs <- tm_map(docs, toSpace, "\\|")
 ```
 
 
-Cleaning the text
+Limpiamos el texto
 
 
-```{r}
+```{r, warning=FALSE}
 # Convert the text to lower case
 docs <- tm_map(docs, content_transformer(tolower))
 # Remove numbers
@@ -148,8 +154,9 @@ docs <- tm_map(docs, stripWhitespace)
 
 
 
-Step 4 : Build a term-document matrix
+## Matriz de documentos de términos
 
+La matriz de documentos es una tabla que contiene la frecuencia de las palabras. Los nombres de las columnas son palabras y los nombres de las filas son documentos. La función TermDocumentMatrix () del paquete de minería de texto se puede utilizar de la siguiente manera:
 
 ```{r}
 dtm <- TermDocumentMatrix(docs)
@@ -171,30 +178,61 @@ wordcloud(words = d$word, freq = d$freq, min.freq = 1,
           colors=brewer.pal(8, "Dark2"))
 ```
 
+Parametros de la funcion:
+
+
+
+    words : the words to be plotted
+    freq : their frequencies
+    min.freq : words with frequency below min.freq will not be plotted
+    max.words : maximum number of words to be plotted
+    random.order : plot words in random order. If false, they will be plotted in decreasing frequency
+    rot.per : proportion words with 90 degree rotation (vertical text)
+    colors : color words from least to most frequent. Use, for example, colors =“black” for single color.
 
 
 
 
+La nube de palabras anterior muestra claramente que "que", "jonstone", son las cinco palabras más importantes en el discurso "El cartero" de Bukowski King.
+
+Argumentos de la función del generador de nube de palabras:
+
+
+# Lo avanzado
+
+Explore los términos frecuentes y sus asociaciones
+
+Puede echar un vistazo a los términos frecuentes en la matriz de documentos de términos de la siguiente manera. En el siguiente ejemplo, queremos encontrar palabras que ocurran al menos cuatro veces:
+
+```{r}
+findFreqTerms(dtm, lowfreq = 3)
+```
+
+Puede analizar la asociación entre términos frecuentes (es decir, términos que se correlacionan) utilizando la función findAssocs(). El código R a continuación identifica qué palabras están asociadas con "mujer" en tengo un discurso de ensueño:
+
+
+```{r}
+findAssocs(dtm, terms = "naufragio", corlimit = 0.2)
+```
+
+
+La tabla de frecuencia de las palabras
+
+```{r}
+head(d, 10)
+```
+
+Trazar frecuencias de palabras
+
+```{r}
+barplot(d[1:10,]$freq, las = 2, names.arg = d[1:10,]$word,
+        col ="violet", main ="Most frequent words",
+        ylab = "Word frequencies")
+```
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Minería de texto y fundamentos de nube de palabras en R:
 
 http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-know
 
