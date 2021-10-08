@@ -212,7 +212,7 @@ Puede analizar la asociación entre términos frecuentes (es decir, términos qu
 
 
 ```{r}
-findAssocs(dtm, terms = "naufragio", corlimit = 0.2)
+findAssocs(dtm, terms = "que", corlimit = 0.2)
 ```
 
 
