@@ -102,26 +102,24 @@ El procedimiento de creación de nubes de palabras es muy sencillo en R si conoc
 
 ## Leemos y cargamos el texto
 
-```{r, warning=FALSE, include=FALSE}
+Leemos los primeros parrafos de Cien años de soledad:
+
+```{r, warning=FALSE}
 
 library("tm")
 library("SnowballC")
 library("wordcloud")
 library("RColorBrewer")
 
-text <- read.delim2("buko.txt", encoding="UTF-8")
+text <- read.delim2("buko.txt")
 
 # Load the data as a corpus
 docs <- Corpus(VectorSource(text))
-inspect(docs)
+#inspect(docs)
 ```
 
 
-Transformamos el texto
 
-Transformation is performed using tm_map() function to replace, for example, special characters from the text.
-
-Replacing “/”, “@” and “|” with space:
 
 ```{r, warning=FALSE}
 toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
@@ -130,20 +128,16 @@ docs <- tm_map(docs, toSpace, "@")
 docs <- tm_map(docs, toSpace, "\\|")
 ```
 
-
-Limpiamos el texto
-
-
 ```{r, warning=FALSE}
 # Convert the text to lower case
 docs <- tm_map(docs, content_transformer(tolower))
 # Remove numbers
 docs <- tm_map(docs, removeNumbers)
 # Remove english common stopwords
-docs <- tm_map(docs, removeWords, stopwords("english"))
+docs <- tm_map(docs, removeWords, stopwords("spanish"))
 # Remove your own stop word
 # specify your stopwords as a character vector
-docs <- tm_map(docs, removeWords, c("blabla1", "blabla2")) 
+docs <- tm_map(docs, removeWords, c("buendía"))
 # Remove punctuations
 docs <- tm_map(docs, removePunctuation)
 # Eliminate extra white spaces
@@ -154,88 +148,19 @@ docs <- tm_map(docs, stripWhitespace)
 
 
 
-## Matriz de documentos de términos
-
-La matriz de documentos es una tabla que contiene la frecuencia de las palabras. Los nombres de las columnas son palabras y los nombres de las filas son documentos. La función TermDocumentMatrix () del paquete de minería de texto se puede utilizar de la siguiente manera:
-
 ```{r}
 dtm <- TermDocumentMatrix(docs)
 m <- as.matrix(dtm)
 v <- sort(rowSums(m),decreasing=TRUE)
 d <- data.frame(word = names(v),freq=v)
-head(d, 10)
-# d
-```
 
-
-Step 5 : Generate the Word cloud
-
-The importance of words can be illustrated as a word cloud as follow :
-
-```{r,warning=FALSE, message=FALSE}
 set.seed(1234)
 wordcloud(words = d$word, freq = d$freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
 ```
 
-Parametros de la funcion:
-
-
-
-    words : the words to be plotted
-    freq : their frequencies
-    min.freq : words with frequency below min.freq will not be plotted
-    max.words : maximum number of words to be plotted
-    random.order : plot words in random order. If false, they will be plotted in decreasing frequency
-    rot.per : proportion words with 90 degree rotation (vertical text)
-    colors : color words from least to most frequent. Use, for example, colors =“black” for single color.
-
-
-
-
-La nube de palabras anterior muestra claramente que "que", "jonstone", son las cinco palabras más importantes en el discurso "El cartero" de Bukowski King.
-
-Argumentos de la función del generador de nube de palabras:
-
-
-# Lo avanzado
-
-Explore los términos frecuentes y sus asociaciones
-
-Puede echar un vistazo a los términos frecuentes en la matriz de documentos de términos de la siguiente manera. En el siguiente ejemplo, queremos encontrar palabras que ocurran al menos cuatro veces:
-
-```{r}
-data.frame(findFreqTerms(dtm, lowfreq = 3))
-```
-
-Puede analizar la asociación entre términos frecuentes (es decir, términos que se correlacionan) utilizando la función findAssocs(). El código R a continuación identifica qué palabras están asociadas con "mujer" en tengo un discurso de ensueño:
-
-
-```{r}
-findAssocs(dtm, terms = "que", corlimit = 0.2)
-```
-
-
-La tabla de frecuencia de las palabras
-
-```{r}
-head(d, 10)
-```
-
-Trazar frecuencias de palabras
-
-```{r}
-barplot(d[1:10,]$freq, las = 2, names.arg = d[1:10,]$word,
-        col ="violet", main ="Most frequent words",
-        ylab = "Word frequencies")
-```
-
-
-
-Minería de texto y fundamentos de nube de palabras en R:
-
-http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5-simple-steps-you-should-know
+Fin
 
 
 
@@ -243,7 +168,7 @@ http://www.sthda.com/english/wiki/text-mining-and-word-cloud-fundamentals-in-r-5
 
 
 
-
+https://rpubs.com/jboscomendoza/mineria-de-textos-con-r
 
 
 
