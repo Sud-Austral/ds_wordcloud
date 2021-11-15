@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
     if (length(input$parrafo) == 0) {
       
     } else {       
-      link_1 <- import("https://github.com/Sud-Austral/ds_insumos_wordcloud/blob/main/buko2.xlsx")
+      link_1 <- import("https://raw.githubusercontent.com/Sud-Austral/ds_insumos_wordcloud/main/buko2.xlsx")
       req(input$parrafo)
       direccion <- link_1[as.numeric(input$parrafo),2] 
       options(encoding="utf-8")
@@ -81,7 +81,7 @@ shinyServer(function(input, output, session) {
     if (length(input$parrafo) == 0) {
       
     } else { 
-      link_1 <- import("https://github.com/Sud-Austral/ds_insumos_wordcloud/blob/main/buko2.xlsx")
+      link_1 <- import("https://raw.githubusercontent.com/Sud-Austral/ds_insumos_wordcloud/main/buko2.xlsx")
       req(input$parrafo) 
       titulo <- link_1[as.numeric(input$parrafo),1]
       
