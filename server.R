@@ -23,9 +23,8 @@ shinyServer(function(input, output, session) {
   observeEvent(input$go, {
     toggle("div_plot1")
   })
-  
-  
-  
+
+
   fn_parrafo = reactive({
     
     if (length(input$parrafo) == 0) {
