@@ -1,0 +1,13 @@
+name: ds_wordcloud
+title: ds_wordcloud
+username:
+account: dataintelligence-chile
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5131791
+bundleId: 5255865
+url: https://dataintelligence-chile.shinyapps.io/ds_wordcloud/
+when: 1637017983.95803
+lastSyncTime: 1637017983.95803
+asMultiple: FALSE
+asStatic: FALSE
