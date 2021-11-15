@@ -7,3 +7,5 @@ https://www.shinyapps.io/
 
 ![](imagen_002.png)
 
+![](imagen_003.png)
+
