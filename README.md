@@ -1,6 +1,6 @@
 # wordcloud
 
-Información de ShinyApp/
+Información de ShinyApp\
 https://www.shinyapps.io/
 
 ***
