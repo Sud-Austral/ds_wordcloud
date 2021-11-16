@@ -5,7 +5,8 @@ https://www.shinyapps.io/
 
 ***
 En el repositorio: C:\Users\chris\OneDrive\Documentos\GitHub\ds_insumos_wordcloud\
-Existe una carpeta llamada buko2 que hace las veces de diccionario: se le asocia 
+Existe una carpeta llamada buko2 que hace las veces de diccionario: se le asocia un título a una dirección web del repositorio:\
+
 ***
 
 ![](imagen_001.png)
