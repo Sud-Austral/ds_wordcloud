@@ -17,7 +17,7 @@ En el que se integran los txt de cualquier texto.
 
 ![](imagen_001.png)
 
-a
+se agrega ?parrafo=1 y obtenemos el primer texto
 
 ![](imagen_002.png)
 
